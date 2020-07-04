@@ -56,7 +56,54 @@
 
   <div class="container" ng-controller="MoviesController as movies">
 
-    <div class="row" ng-repeat="item in movies.items">
+    <div id = "moviesdes" class="row" ng-if="movies.login===false && movies.signup===true">
+
+      <div class="container-fluid">
+        <h3 style="text-align: center;"> Dont have an account? Sign up here</h3><span><a href="">
+          <form class="form-horizontal" action="booking_confirmation.html">
+            <div class="form-group">
+              <label class="control-label col-sm-2" for="name">Username :</label>
+              <div class="col-sm-10">
+                <input type="text" ng-model = 'movies.name' class="form-control" id="movie" placeholder="Name">
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="control-label col-sm-2" for="a">Password:</label>
+              <div class="col-sm-10">
+                <input type="password" class="form-control" ng-model = 'movies.password' id="a" placeholder="Movie Name">
+              </div>
+            </div>
+            </form>
+        <div style="text-align: center;">
+          <button ng-click="movies.signupbutton()">Sign up</button>
+        </div>
+      </div>
+
+    </div>
+    <div id = "moviesdes" class="row" ng-if="movies.login===false && movies.signup===false">
+      <div class="container-fluid">
+        <h3 style="text-align: center;"> Dont have an account? </h3>
+          <div style="text-align: center;"><button style="align-items: center;" ng-click="movies.transfer()">sign up</button></div>
+          <form class="form-horizontal" action="booking_confirmation.html">
+            <div class="form-group">
+              <label class="control-label col-sm-2" for="name">Username :</label>
+              <div class="col-sm-10">
+                <input type="text" ng-model = 'movies.name' class="form-control" id="movie" placeholder="Name">
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="control-label col-sm-2" for="a">Password:</label>
+              <div class="col-sm-10">
+                <input type="password" class="form-control" ng-model = 'movies.password' id="a" placeholder="Movie Name">
+              </div>
+            </div>
+            </form>
+        <div style="text-align: center;">
+          <button ng-click="movies.loginbutton()">Sign In</button>
+        </div>
+      </div>
+    </div>
+    <div class="row" ng-repeat="item in movies.items" ng-if="movies.login===true && movies.signup==true">
       <div class="col-md-6 col-sm-12">
         <img class="img-responsive" src="{{item.url}}" alt="Oblivion" srcset="">
       </div>
@@ -90,8 +137,8 @@
               <hr class="visible-xs">
             </section>
             <section id="testimonials" class="col-sm-4">
-              <p>"The best Chinese restaurant I've been to! And that's saying a lot, since I've been to many!"</p>
-              <p>"Amazing food! Great service! Couldn't ask for more! I'll be back again and again!"</p>
+              <p>“No good movie is too long and no bad movie is short enough.” “Every great film should seem new every time you see it.” “Art is the closest we can come to understanding how a stranger really feels.” “We live in a box of space and time.</p>
+          <p>"Good movies make life better"</p>
             </section>
           </div>
           <div class="text-center">&copy; Book It! cinemas 2020</div>

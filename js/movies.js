@@ -38,12 +38,80 @@
             
         });
 
+
+        movies.login=false;
+
+        movies.signup=false;
+
+        movies.name ='';
+        movies.password='';
+
+        movies.transfer = function(){
+            movies.signup=true;
+        }
+        movies.signupbutton = function(){
+            var post = {
+                username : movies.name,
+                password : movies.password,
+            }
+
+            var promise = MoviesControllerService.getUserDetails();
+
+            promise.then(function(res){
+                for(var i=0;i<res.data.length;i++)
+                {
+                    if(movies.name === res.data[i].username)
+                    {
+                        window.alert('Username already exists');
+                        movies.signup=false;
+                        return;
+                    }
+
+                }
+
+                var promise = MoviesControllerService.postUserDetails(post);
+                promise.then(function(res){
+                    window.alert('signup successfull please log in to continue');
+                    movies.signup=true;
+                    movies.login=true;
+                }).catch(function(res){
+                    throw new Error('something went wrong');
+                })
+            }).catch(function(){
+                throw new Error('Something went wrong');
+            })
+        };
+        movies.loginbutton = function(){
+            var promise = MoviesControllerService.getUserDetails();
+
+            promise.then(function(res){
+                for(var i=0;i<res.data.length;i++)
+                {
+                    if(movies.name === res.data[i].username && movies.password === res.data[i].password)
+                    {
+                        movies.login=true;
+                        movies.signup=true;
+                        return;
+                    }
+
+                    window.alert('please check your username or password');
+                }
+            }).catch(function(){
+                throw new Error('Something went wrong');
+            })
+        }
+
+
+
+        
+
         movies.setMovie = function(arg){
 
             var name = movies[arg].movie;
             MoviesControllerService.setMovie(name);
         
         };
+        
     }
     
     BookingsController.$inject=['MoviesControllerService']
@@ -61,15 +129,25 @@
         bookings.booked=false;
         //bookings.name = MoviesControllerService.getName();
         console.log(bookings);
-
+        bookings.id='';
+        bookings.cancel = function(){
+            var promise = MoviesControllerService.cancelTicket(bookings.id);
+            promise.then(function(res){
+                window.alert('cancellation successful');
+            }).catch(function(){
+                throw new Error('something worng');
+            });
+        }
         //bookings.items=[];
         bookings.seats=[]
+        bookings.names=[]
         var promise = MoviesControllerService.getMovies();
 
         promise.then(function(response){
             var temp=[]
             for(var i=0;i<response.data.length;i++)
             {
+                bookings.names.push({name : response.data[i].movie, url : response.data[i].url});
                 temp.push(response.data[i].seatno);
             }
             for(var i=1;i<=10;i++)
@@ -80,6 +158,7 @@
                 }
             }
             console.log(bookings.seats);
+            console.log(bookings.names);
             
             
             
@@ -108,6 +187,17 @@
             }).catch(function(err){
                 window.alert(err);
             })
+        };
+
+        bookings.cancelNow = function(){
+
+            var promise = MoviesControllerService.cancelTicket(bookings.items._id);
+            promise.then(function(res){
+                window.alert('cancellation successful');
+            }).catch(function(){
+                throw new Error('something worng');
+            });
+
         }
     }
 
@@ -124,6 +214,17 @@
                 return response;
             }).catch(function(err){
                 throw new Error("error");
+            });
+        };
+
+        service.cancelTicket = function(arg){
+            return $http({
+                method:"DELETE",
+                url : "http://localhost:3000/customer"
+            }).then(function(response){
+                return response;
+            }).catch(function(response){
+                return new Error("Something wrong");
             });
         };
 
@@ -153,6 +254,36 @@
 
         service.getName = function(){
             return service.name;
+        }
+
+        service.getUserDetails = function(){
+
+            return $http({
+                method:"GET",
+                url : 'http://localhost:3000/user'
+            }).then(function(response){
+                return response;
+            }).catch(function(err){
+                throw new Error("error");
+            });
+
+        }
+
+        service.postUserDetails = function(arg){
+
+            return $http({
+                method:"POST",
+                url : 'http://localhost:3000/user',
+                data : JSON.stringify(arg),
+                headers: {
+                    'Content-Type': 'application/json; charset=utf-8'
+               }
+            }).then(function(response){
+                return response;
+            }).catch(function(err){
+                throw new Error(err);
+            })
+            
         }
 
 

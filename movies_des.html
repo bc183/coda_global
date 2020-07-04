@@ -12,8 +12,8 @@
     <script src="js/angular.min.js"></script>
     <script src="js/movies.js"></script>
   </head>
-<body>
-  <header>
+<body ng-controller="BookingsController as bookings">
+  <header >
     <nav id="header-nav" class="navbar navbar-default">
       <div class="container">
         <div class="navbar-header">
@@ -40,7 +40,7 @@
                 <span class="glyphicon glyphicon-home"></span><br class="hidden-xs"> Home </a>
             </li>
             <li>
-              <a href="menu-categories.html">
+              <a href="movies.html">
                 <span class="glyphicon glyphicon-camera"></span><br class="hidden-xs"> Movies</a>
             </li>
             <li>
@@ -50,11 +50,15 @@
             </li>
           </ul><!-- #nav-list -->
         </div><!-- .collapse .navbar-collapse -->
+        <label for="cancel">Cancel Ticket</label>
+          <input id="cancel" type="text" ng-model = "bookings.id" placeholder="enter booking id"><span><button ng-click="bookings.cancel()">
+            cancel ticket
+          </button></span>
       </div><!-- .container -->
     </nav><!-- #header-nav -->
   </header>
 
-  <div class="container" ng-controller="BookingsController as bookings">
+  <div class="container">
     <div id="moviesdes" class="container-fluid" ng-if="bookings.booked==false">
       <h2>BOOKINGS</h2>
       <div class="row">
@@ -69,7 +73,11 @@
             <div class="form-group">
               <label class="control-label col-sm-2" for="a">Movie name:</label>
               <div class="col-sm-10">
-                <input type="text" class="form-control" ng-model = 'bookings.movie' id="a" placeholder="Movie Name">
+                <select class="form-control" name ="pwd" id="a" ng-model="bookings.movie">
+                  <option ng-repeat="item in bookings.names" value="{{item.name}}">
+                        {{item.name}}
+                  </option>
+                </select>
               </div>
             </div>
             <div class="form-group">
@@ -81,7 +89,7 @@
             <div class="form-group">
               <label class="control-label col-sm-2" for="c">Show Timing :</label>
               <div class="col-sm-10">
-                <select name="pwd" id="c" ng-model="bookings.show">
+                <select class="form-control" name="pwd" id="c" ng-model="bookings.show">
                   <option value="10 AM">10 AM</option>
                   <option value="1PM">1 PM</option>
                   <option value="4 PM">4 PM</option>
@@ -92,7 +100,7 @@
             <div class="form-group">
               <label class="control-label col-sm-2" for="d">Screen :</label>
               <div class="col-sm-10">
-                <select name="pwd" id="d" ng-model="bookings.screen">
+                <select class="form-control" name="pwd" id="d" ng-model="bookings.screen">
                   <option value="A">A</option>
                   <option value="B">B</option>
                   <option value="C">C</option>
@@ -102,8 +110,8 @@
             </div>
             <div class="form-group">
               <label class="control-label col-sm-2" for="e">seats Available:</label>
-              <div class="col-sm-10"></div>
-                <select name="pwd" id="e" ng-model="bookings.seatNo">
+              <div class="col-sm-10">
+                <select class="form-control" name="pwd" id="e" ng-model="bookings.seatNo">
                   <option ng-repeat="item in bookings.seats" value="{{item}}">{{item}}</option>
                 </select>
               </div>
@@ -155,7 +163,7 @@
             <span>Note * please save the booking id for cancellation</span>
         </li>
         <li>
-          <button aria-placeholder="Cancel Now">Cancel</button>
+          <button aria-placeholder="Cancel Now" ng-click="bookings.cancelNow()">Cancel</button>
         </li>
       </ul>
     </div>
@@ -178,8 +186,8 @@
           <hr class="visible-xs">
         </section>
         <section id="testimonials" class="col-sm-4">
-          <p>"The best Chinese restaurant I've been to! And that's saying a lot, since I've been to many!"</p>
-          <p>"Amazing food! Great service! Couldn't ask for more! I'll be back again and again!"</p>
+          <p>“No good movie is too long and no bad movie is short enough.” “Every great film should seem new every time you see it.” “Art is the closest we can come to understanding how a stranger really feels.” “We live in a box of space and time.</p>
+          <p>"Good movies make life better"</p>
         </section>
       </div>
       <div class="text-center">&copy; Book It! cinemas 2020</div>
